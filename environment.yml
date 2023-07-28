@@ -1,0 +1,21 @@
+name: tiger
+channels:
+  - pytorch
+  - defaults
+  - anaconda
+dependencies:
+  - python=3.9
+  - cudatoolkit
+  - pip
+  - pytorch=1.12.1
+  - pytorch-mutex=1.0=cuda
+  - torchaudio=0.12.1
+  - torchvision=0.13.1
+  - pip:
+    - accelerate==0.19.0
+    - diffusers==0.18.0
+    - gradio==3.24.1
+    - gradio-client==0.0.8
+    - transformers==4.28.0
+    - tokenizers==0.13.2
+    - sentencepiece==0.1.97
