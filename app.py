@@ -120,7 +120,7 @@ def main(args):
         text_input.submit(chat.respond, inputs=[text_input, decoding_stratey, num_beams, p_value, k_value, text2image_seed, human_words, human_prompt, others_prompt, negative_prompt, chatbot, chat_state], outputs=[text_input, chatbot, chat_state])
         clear.click(chat.restart_chat, [chat_state], [chatbot, text_input, start, clear, chat_state], queue=False)
 
-    demo_chatbot.launch(share=True, enable_queue=False, server_name="127.0.0.1") # , server_port=7863
+    demo_chatbot.launch(share=True, enable_queue=False, server_name="127.0.0.1")
 
 
 if __name__ == "__main__":
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     
     parser.add_argument('--text2image_model_weights_path', type=str, default=text2image_model_weights_path)
 
-    parser.add_argument('--device', default="cuda:6")
+    parser.add_argument('--device', default="cuda:0")
 
     args = parser.parse_args()
 
