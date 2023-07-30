@@ -64,7 +64,7 @@ class Chat:
     
     def generate_response(self, context: str, share_photo: bool, decoding_stratey: str, num_beams , p_value, k_value):
         tokenizer = self.text_dialog_tokenizer
-        tag_list = ["[UTT]", "[DST]"]  # 文本回复以 [UTT] 开头, 图像描述以 [DST] 开头
+        tag_list = ["[UTT]", "[DST]"]  # Text responses begin with [UTT], image descriptions begin with [DST].
         tag_id_dic = {tag: tokenizer.convert_tokens_to_ids(tag) for tag in tag_list}
         tag = "[DST]" if share_photo else "[UTT]"
         bad_words = ["[UTT] [UTT]", "[UTT] [DST]", "[UTT] <|endoftext|>", "[DST] [UTT]", "[DST] [DST]", "[DST] <|endoftext|>"]
@@ -81,7 +81,7 @@ class Chat:
                                                             do_sample=False, num_beams=num_beams, length_penalty=0.7,
                                                             no_repeat_ngram_size=3,
                                                             bad_words_ids=tokenizer(bad_words, add_prefix_space=True, add_special_tokens=False).input_ids,
-                                                            forced_decoder_ids=[[input_ids.shape[-1], tag_id_dic[tag]]],  # 指定生成的回复中第一个token始终是tag(因为generated_ids中包括input_ids, 所以是第input_ids.shape[-1]位)  
+                                                            forced_decoder_ids=[[input_ids.shape[-1], tag_id_dic[tag]]],  # Specifies that the first token in the generated response is always the [tag]
                                                             pad_token_id=tokenizer.eos_token_id, eos_token_id=tokenizer.eos_token_id)
         elif decoding_stratey == "Top-P":
             generated_ids = self.text_dialog_model.generate(input_ids.to(self.device),
@@ -89,7 +89,7 @@ class Chat:
                                                             do_sample=True, top_p=p_value,
                                                             no_repeat_ngram_size=3,
                                                             bad_words_ids=tokenizer(bad_words, add_prefix_space=True, add_special_tokens=False).input_ids,
-                                                            forced_decoder_ids=[[input_ids.shape[-1], tag_id_dic[tag]]],  # 指定生成的回复中第一个token始终是tag(因为generated_ids中包括input_ids, 所以是第input_ids.shape[-1]位)  
+                                                            forced_decoder_ids=[[input_ids.shape[-1], tag_id_dic[tag]]],
                                                             pad_token_id=tokenizer.eos_token_id, eos_token_id=tokenizer.eos_token_id)
         elif decoding_stratey == "Top-K":
             generated_ids = self.text_dialog_model.generate(input_ids.to(self.device),
@@ -97,19 +97,19 @@ class Chat:
                                                             do_sample=True, top_k=k_value,
                                                             no_repeat_ngram_size=3,
                                                             bad_words_ids=tokenizer(bad_words, add_prefix_space=True, add_special_tokens=False).input_ids,
-                                                            forced_decoder_ids=[[input_ids.shape[-1], tag_id_dic[tag]]],  # 指定生成的回复中第一个token始终是tag(因为generated_ids中包括input_ids, 所以是第input_ids.shape[-1]位)  
+                                                            forced_decoder_ids=[[input_ids.shape[-1], tag_id_dic[tag]]],
                                                             pad_token_id=tokenizer.eos_token_id, eos_token_id=tokenizer.eos_token_id)
               
         generated_tokens = tokenizer.convert_ids_to_tokens(generated_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
 
         end, i = 0, 0
         for i, token in enumerate(generated_tokens):
-            if i == 0:  # 由于forced_decoder_ids的定义, generated_tokens第1个token必为tag, 故从第2个token开始
+            if i == 0:  # Due to the definition of forced_decoder_ids, the first token of generated_tokens must be a [tag], so start with the second token.
                 continue
             if token in tag_list:
                 end = i
                 break
-        if end == 0 and i != 0:  # 可能遇不到tag
+        if end == 0 and i != 0:  # might not get a [tag]
             end = len(generated_tokens)
         
         response_tokens = generated_tokens[1:end]

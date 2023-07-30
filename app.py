@@ -14,6 +14,7 @@ from component import decoding_setting
 
 
 def main(args):
+    args.device = f"cuda:{args.gpu_id}"
     # Intent Prediction
     print("Loading Intent Prediction Classifier...")
     ## tokenizer
@@ -40,7 +41,7 @@ def main(args):
 
     # Text-to-Image Translator
     print("Loading Text-to-Image Translator...")
-    text2image_model = StableDiffusionPipeline.from_pretrained(args.text2image_model_weights_path, torch_dtype=torch.bfloat16)
+    text2image_model = StableDiffusionPipeline.from_pretrained(args.text2image_model_weights_path, torch_dtype=torch.float32)
     print("Text-to-Image Translator loading completed.")
     
     chat = Chat(intent_predict_model, intent_predict_tokenizer, 
@@ -124,8 +125,8 @@ def main(args):
 
 
 if __name__ == "__main__":
-    intent_predict_model_weights_path = os.path.join(sys.path[0], "model_weights/Tiger_t5_base_encoder.pth")
-    text_dialog_model_weights_path = os.path.join(sys.path[0], "model_weights/Tiger_DialoGPT_medium.pth")
+    intent_predict_model_weights_path = os.path.join(sys.path[0], "model_weights/tiger_t5_base_encoder.pth")
+    text_dialog_model_weights_path = os.path.join(sys.path[0], "model_weights/tiger_dialogpt_medium.pth")
     text2image_model_weights_path = "friedrichor/stable-diffusion-2-1-realistic"
     
     parser = argparse.ArgumentParser()
@@ -138,7 +139,7 @@ if __name__ == "__main__":
     
     parser.add_argument('--text2image_model_weights_path', type=str, default=text2image_model_weights_path)
 
-    parser.add_argument('--device', default="cuda:0")
+    parser.add_argument('--gpu_id', type=int, default=0)
 
     args = parser.parse_args()
 

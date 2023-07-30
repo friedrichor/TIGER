@@ -9,7 +9,7 @@ class IntentPredictModel(nn.Module):
         super().__init__()
         self.backbone = T5EncoderModel.from_pretrained(pretrained_model_name_or_path)
 
-        out_features = self.backbone.encoder.block[-1].layer[-1].DenseReluDense.wo.out_features  # t5-base 为 768，t5-large 为 1024
+        out_features = self.backbone.encoder.block[-1].layer[-1].DenseReluDense.wo.out_features
         self.fc1 = nn.Linear(out_features, 128)
         self.fc2 = nn.Linear(128, num_classes)
 
