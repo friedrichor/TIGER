@@ -49,11 +49,11 @@ def main(args):
                 text2image_model, 
                 args.device)
     
-    title = """<h1 align="center">A Multimodal Dialogue System based on Tiger</h1>"""
+    title = """<h1 align="center">A Multimodal Dialogue System based on TIGER</h1>"""
     description1 = """<h2>Input text start chatting!</h2>"""
     hr = """<hr>"""
     language = """<h3>Language: English</h3>"""
-
+    
     with gr.Blocks() as demo_chatbot:
         gr.Markdown(title)
         gr.Markdown(description1)
@@ -65,21 +65,25 @@ def main(args):
         with gr.Row():
             human_words = gr.Textbox(value='''"man", "men", "woman", "women", "people", "person", "human", "male", "female", "boy", "girl", "child", "kid", "baby", "player"''',
                                      interactive=True,
-                                     label="Human Words")
+                                     label="Human Words",
+                                     show_copy_button=True)
             human_prompt = gr.Textbox(value=", facing the camera, photograph, highly detailed face, depth of field, moody light, style by Yasmin Albatoul, Harry Fayt, centered, extremely detailed, Nikon D850, award winning photography",
                                       interactive=True,
-                                      label="Human Extra Prompts")
+                                      label="Human Extra Prompts",
+                                      show_copy_button=True)
         with gr.Row():
             gr.Textbox(placeholder="No need to fill",
                        interactive=False,
                        label="Others Words")        
             others_prompt = gr.Textbox(value=", depth of field. bokeh. soft light. by Yasmin Albatoul, Harry Fayt. centered. extremely detailed. Nikon D850, (35mm|50mm|85mm). award winning photography.",
                                        interactive=True,
-                                       label="Others Extra Prompts")
+                                       label="Others Extra Prompts",
+                                       show_copy_button=True)
             
         negative_prompt = gr.Textbox(value="cartoon, anime, ugly, (bad proportions, unnatural feature, incongruous feature:1.4), (blurry, un-sharp, fuzzy, un-detailed skin:1.2), (facial contortion, poorly drawn face, deformed iris, deformed pupils:1.3), (mutated hands and fingers:1.5), disconnected hands, disconnected limbs",
                                      interactive=True,
-                                     label="Negative Prompt")                   
+                                     label="Negative Prompt",
+                                     show_copy_button=True)                   
 
         with gr.Row():
             with gr.Column(scale=0.4):
@@ -112,7 +116,7 @@ def main(args):
 
             with gr.Column():
                 chat_state = gr.State()
-                chatbot = gr.Chatbot(label='Tiger')
+                chatbot = gr.Chatbot(label='TIGER')
                 text_input = gr.Textbox(label='User', placeholder="Please click the <Start Chat> button to start chat!", interactive=False)
         
         
