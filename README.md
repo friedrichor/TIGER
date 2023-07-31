@@ -21,8 +21,8 @@ It's worth mentioning that our research focuses on open-domain multimodal dialog
 
 ### 1. Prepare the code and the environment
 ```
-git clone https://github.com/friedrichor/Tiger.git
-cd Tiger/
+git clone https://github.com/friedrichor/TIGER.git
+cd TIGER/
 conda env create -f environment.yml
 conda activate tiger
 ```
@@ -32,10 +32,13 @@ conda activate tiger
 Please download our model weights from [here](https://drive.google.com/drive/folders/1ulc4X0yzJHQNFZJ2nyH5H9ZatZPkzZTC?usp=sharing). The final weights would be in a single folder in a structure similar to the following:
 
 ```
-Tiger
+TIGER
 ├── model_weights
 │   ├── tiger_t5_base_encoder.pth
 │   └── tiger_dialogpt_medium.pth
+├── app.py
+├── chatbot.py
+...
 ```
 
 For Text-to-Image Translator's weights, we have already uploaded it to Hugging Face, so you don't need to download it locally. More details can be sourced from [friedrichor/stable-diffusion-2-1-realistic](https://huggingface.co/friedrichor/stable-diffusion-2-1-realistic).
