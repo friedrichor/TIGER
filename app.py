@@ -88,13 +88,14 @@ def main(args):
         with gr.Row():
             with gr.Column(scale=0.4):
                 decoding_stratey = gr.Radio(["Beam", "Top-P", "Top-K"],
+                                            value="Beam",
                                             interactive=True,
                                             label="Decoding Strategy")
                 num_beams = gr.Slider(minimum=1, maximum=10, step=1,
                                       value=5,
                                       interactive=True,
                                       label="beam search size",
-                                      visible=False)
+                                      visible=True)
                 p_value = gr.Slider(minimum=0, maximum=1, step=0.01,
                                     value=0.8,
                                     interactive=True,
