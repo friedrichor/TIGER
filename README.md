@@ -1,6 +1,6 @@
 # &#128047; TIGER: A Unified Generative Model Framework for Multimodal Dialogue Response Generation
 
-[![YouTube](https://badges.aleen42.com/src/youtube.svg)]()
+[![YouTube](https://badges.aleen42.com/src/youtube.svg)](https://youtu.be/70d1OvcQleo)
 
 
 # Demo
