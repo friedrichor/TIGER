@@ -121,7 +121,7 @@ def main(args):
                 text_input = gr.Textbox(label='User', placeholder="Please click the <Start Chat> button to start chat!", interactive=False)
         
         
-        decoding_stratey.change(fn=decoding_setting, inputs=[decoding_stratey, num_beams, p_value, k_value], outputs=[num_beams, p_value, k_value])
+        decoding_stratey.change(fn=decoding_setting, inputs=[decoding_stratey], outputs=[num_beams, p_value, k_value])
         start.click(chat.start_chat, [chat_state], [text_input, start, clear, chat_state])
         text_input.submit(chat.respond, inputs=[text_input, decoding_stratey, num_beams, p_value, k_value, text2image_seed, human_words, human_prompt, others_prompt, negative_prompt, chatbot, chat_state], outputs=[text_input, chatbot, chat_state])
         clear.click(chat.restart_chat, [chat_state], [chatbot, text_input, start, clear, chat_state], queue=False)
