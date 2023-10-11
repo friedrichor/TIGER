@@ -1,0 +1,11 @@
+model:
+    rmp_pretrained_model_path_or_name: "t5-base"
+    rmp_checkpoint: "./model_weights/tiger_t5_base_encoder.pth"
+    tdrg_pretrained_model_path_or_name: "microsoft/DialoGPT-medium"
+    tdrg_checkpoint: "./model_weights/tiger_dialogpt_medium.pth"
+    t2it_model_path_or_name: "./model_weights/stable-diffusion-2-1-realistic"
+
+run:
+    outputs_dir: "outputs/demo"
+    # device
+    device: "cuda"

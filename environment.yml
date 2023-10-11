@@ -17,5 +17,6 @@ dependencies:
     - gradio==3.39.0
     - gradio-client==0.3.0
     - huggingface-hub==0.15.1
+    - omegaconf==2.3.0
     - sentencepiece==0.1.97
     - transformers==4.27.0
