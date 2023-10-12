@@ -5,9 +5,12 @@ from PIL import Image
 import torch
 import torch.nn as nn
 from transformers import (T5Tokenizer, T5EncoderModel,
-                          GPT2Tokenizer, GPT2Config, GPT2LMHeadModel)
+                          GPT2Tokenizer, GPT2Config, GPT2LMHeadModel,
+                          StoppingCriteriaList)
 from diffusers import StableDiffusionPipeline
 from transformers.modeling_outputs import SequenceClassifierOutput
+
+from tiger.utils import StoppingCriteriaSub
 
 
 class ResponseModalPredictor(nn.Module):
@@ -84,8 +87,7 @@ class TIGER(nn.Module):
         return model
 
     def response_modal_predict(self, context: str) -> bool:
-        logging.info(f"context for response modal prediction: {context}")
-        context_encoded = self.intent_predict_tokenizer.encode_plus(
+        context_encoded = self.rmp_tokenizer.encode_plus(
             text=context,
             add_special_tokens=True,
             truncation=True,
@@ -109,79 +111,67 @@ class TIGER(nn.Module):
         self, 
         context: str, 
         share_photo: bool,
-        max_new_tokens: int = 512,
-        min_new_tokens:int = 3,
+        max_new_tokens: int = 256,
+        min_new_tokens:int = 10,
         do_sample: bool = True,
         num_beams: int = 5,
         top_p: float = 0.9,
         top_k: float = 3,
-        no_repeat_ngram_size: int = 3,
+        no_repeat_ngram_size: int = 5,
         repetition_penalty: float = 1.0,
         length_penalty: float = 1.0,
         temperature: float = 1.0,
     ) -> str:     
         tokenizer = self.tdrg_tokenizer
         tag_list = ["[UTT]", "[DST]"]  # Text responses begin with [UTT], image descriptions begin with [DST].
-        tag_id_dic = {tag: tokenizer.convert_tokens_to_ids(tag) for tag in tag_list}
         tag = "[DST]" if share_photo else "[UTT]"
-        bad_words = ["[UTT] [UTT]", "[UTT] [DST]", "[UTT] <|endoftext|>", "[DST] [UTT]", "[DST] [DST]", "[DST] <|endoftext|>"]
+        
+        stop_words_ids = [tokenizer("[DST]", add_special_tokens=False, return_tensors="pt")["input_ids"].to(self.device),
+                          tokenizer("[UTT]", add_special_tokens=False, return_tensors="pt")["input_ids"].to(self.device)]
+        print(f"stop_words_ids: {stop_words_ids}")
+        stopping_criteria = StoppingCriteriaList([StoppingCriteriaSub(stops=stop_words_ids)])
         
         input_ids = tokenizer.encode(
-            context,
+            context + tag,
             add_special_tokens=False,
             return_tensors='pt'
         ).to(self.device)
         
         generated_ids = self.tdrg_model.generate(
-            input_ids,
+            input_ids=input_ids,
             max_new_tokens=max_new_tokens,
             min_new_tokens=min_new_tokens,
             do_sample=do_sample,
             num_beams=num_beams,
             top_p=top_p,
-            top_k=top_k,
+            #top_k=top_k,
             no_repeat_ngram_size=no_repeat_ngram_size,
             repetition_penalty=repetition_penalty,
             length_penalty=length_penalty,
             temperature=temperature,
-            bad_words_ids=tokenizer(bad_words, add_prefix_space=True, add_special_tokens=False).input_ids,
-            forced_decoder_ids=[[input_ids.shape[-1], tag_id_dic[tag]]],  # Specifies that the first token in the generated response is always the [tag]
-            pad_token_id=tokenizer.eos_token_id, 
-            eos_token_id=tokenizer.eos_token_id
+            stopping_criteria=stopping_criteria
         )
-        
-        generated_tokens = tokenizer.convert_ids_to_tokens(generated_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
+        response = tokenizer.decode(generated_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
+        print(f"00 response = {response}")
+        for tag in tag_list:
+            response = response.split(tag)[0]
+        response = response.strip(' ')
+        print(f"01 response = {response}")
 
-        end, i = 0, 0
-        for i, token in enumerate(generated_tokens):
-            if i == 0:  # Due to the definition of forced_decoder_ids, the first token of generated_tokens must be a [tag], so start with the second token.
-                continue
-            if token in tag_list:
-                end = i
-                break
-        if end == 0 and i != 0:  # might not get a [tag]
-            end = len(generated_tokens)
-        
-        response_tokens = generated_tokens[1:end]
-        response_str = tokenizer.convert_tokens_to_string(response_tokens).lstrip()
-
-        return response_str
+        return response
     
     def generate_image(
         self,
         caption: str,
         negative_prompt: Optional[str] = None,
-        seed: int = 42,
         num_inference_steps: int = 50,
         guidance_scale: float = 7.5,
     ) -> Image.Image:
-        generator = torch.Generator(device=self.device).manual_seed(seed)
         image = self.t2it_model(
             prompt=caption,
             negative_prompt=negative_prompt,
             num_inference_steps=num_inference_steps,
-            guidance_scale=guidance_scale,
-            generator=generator
+            guidance_scale=guidance_scale
         ).images[0]
         
         return image

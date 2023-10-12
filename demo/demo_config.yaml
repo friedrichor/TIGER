@@ -1,9 +1,9 @@
 model:
-    rmp_pretrained_model_path_or_name: "t5-base"
+    rmp_pretrained_model_path_or_name: "/datas/kfh/.cache/huggingface/hub/models--t5-base/snapshots/fe6d9bf207cd3337512ca838a8b453f87a9178ef"
     rmp_checkpoint: "./model_weights/tiger_t5_base_encoder.pth"
-    tdrg_pretrained_model_path_or_name: "microsoft/DialoGPT-medium"
+    tdrg_pretrained_model_path_or_name: "/datas/kfh/.cache/huggingface/hub/models--microsoft--DialoGPT-medium/snapshots/9d5c5fadcc072b693fb5a5e29416bbf3f503c26c"
     tdrg_checkpoint: "./model_weights/tiger_dialogpt_medium.pth"
-    t2it_model_path_or_name: "./model_weights/stable-diffusion-2-1-realistic"
+    t2it_model_path_or_name: "/datas/kfh/.cache/huggingface/hub/models--friedrichor--stable-diffusion-2-1-realistic/snapshots/95f35f5956d9aad7e8a1594b36e8ab81fd2821aa"
 
 run:
     outputs_dir: "outputs/demo"

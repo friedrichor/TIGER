@@ -20,9 +20,6 @@ class ConversationalAgent:
         self.generated_images_storage = os.path.join(self.outputs_dir, "generated")
         os.makedirs(self.generated_images_storage, exist_ok=True)
         
-        self.context_for_rmp = ""  # for response modal predictor
-        self.context_for_tdrg = ""  # for textual dialogue response generator
-        
     @property
     def model_config(self):
         return self.config.model
@@ -48,56 +45,112 @@ class ConversationalAgent:
         self.model.t2it_model.to(self.device)
         
     def start_chat(self, chat_state):
-        self.context_for_rmp = ""
-        self.context_for_tdrg = ""
-        
-        return (
-            gr.update(interactive=True, placeholder="input the text."),  # [input_text] Textbox
-            gr.update(interactive=False),  # [start_btn] Button
-            gr.update(interactive=True),  # [clear_btn] Button
-            chat_state  # [chat_state] State
-        )
-    
-    def restart_chat(self, chat_state):
-        self.context_for_rmp = ""
-        self.context_for_tdrg = ""
+        chat_state.append(["", "", ""])
+        logging.info("=" * 30 + "Start Chat" + "=" * 30)
         
         return (
             None,  # [chatbot] Chatbot
+            chat_state,  # [chat_state] State
+            gr.update(interactive=True, placeholder="input the text."),  # [input_text] Textbox
+            gr.update(interactive=False),  # [start_btn] Button
+            gr.update(interactive=True),  # [clear_btn] Button
+        )
+    
+    def restart_chat(self):
+        logging.info("=" * 30 + "End Chat" + "=" * 30)
+        
+        return (
+            None,  # [chatbot] Chatbot
+            [],  # [chat_state] State
             gr.update(interactive=False, placeholder="Please click the <Start Chat> button to start chat!"),  # [input_text] Textbox
             gr.update(interactive=True),  # [start] Button
             gr.update(interactive=False),  # [clear] Button
-            chat_state  # [chat_state] State
         )
+    
+    def undo(self, chatbot, chat_state):
+        logging.info("-" * 30 + "   Undo   " + "-" * 30)
+        text_input, _ = chatbot.pop()
+        logging.info(f"\n@ chatbot: {chatbot}")
+        chat_state.pop()
+        logging.info(f"\n@ chat_state: {chat_state}")
+        logging.info("-" * 70)
+        
+        return text_input, chatbot, chat_state
+    
+    def generate_visual_response(
+        self,
+        description: str,
+        num_inference_steps: int,
+        guidance_scale: float,
+        human_words,
+        human_prompt: str,
+        others_prompt: str,
+        negative_prompt: str
+    ) -> str:
+        logging.info(f"\n@@ Generated Image Description: {description}")
+        extra_prompt = {"human": human_prompt, "others": others_prompt}
+        type = "others"
+        for human_word in human_words:
+            if human_word in description:
+                type = "human"
+                break
+        caption = description + extra_prompt[type]
+        logging.info(f"\n@@ Caption for Generation = {caption}")
+        
+        visual_response = self.model.generate_image(
+            caption, 
+            negative_prompt, 
+            num_inference_steps=num_inference_steps,
+            guidance_scale=guidance_scale
+        )
+        
+        generated_image_save_path = os.path.join(self.generated_images_storage, "{}.jpg".format(len(os.listdir(self.generated_images_storage))))
+        visual_response.save(generated_image_save_path)
+        logging.info(f"@@ Generated Image is saved to: {generated_image_save_path}")
+        
+        return generated_image_save_path
     
     def respond(
         self, 
         message,
+        chat_history: gr.Chatbot,
+        chat_state: gr.State,
         do_sample: bool,
         num_beams: int,
         top_p: float, 
         top_k: int, 
-        text2image_seed: int,
         num_inference_steps: int,
         guidance_scale: float,
         human_words: str,
         human_prompt: str,
         others_prompt: str,
         negative_prompt: str,
-        chat_history: gr.Chatbot, 
-        chat_state: gr.State
     ):
-        logging.info(f"User:\n{message}")
+        logging.info(f"\n@@ User Input: {message}")
         # process context
-        if self.context_for_rmp == "":
-            self.context_for_rmp += message
+        # print(f"$$ chat_state: {chat_state}")
+        _, context_for_rmp, context_for_tdrg = chat_state[-1]
+        if context_for_rmp == "":
+            context_for_rmp += message
         else:
-            self.context_for_rmp += " [SEP] " + message
-        self.context_for_tdrg += "[UTT] " + message
+            context_for_rmp += " [SEP] " + message
+        context_for_tdrg += "[UTT] " + message
         
-        share_photo = self.model.response_modal_predict(self.context_for_rmp)
+        logging.info(f"\n@@ context_for_rmp = {context_for_rmp}")
+        logging.info(f"\n@@ context_for_tdrg = {context_for_tdrg}")
+        
+        logging.info(f"## Textual Response Generation Setting")
+        logging.info(f"do_sample = {do_sample}")
+        logging.info(f"num_beams = {num_beams}")
+        logging.info(f"top_p = {top_p}")
+        logging.info(f"top_k = {top_k}")
+        logging.info(f"## Visual Response Generation Setting")
+        logging.info(f"num_inference_steps = {num_inference_steps}")
+        logging.info(f"guidance_scale = {guidance_scale}")
+        
+        share_photo = True if self.model.response_modal_predict(context_for_rmp) else False
         textual_response = self.model.generate_textual_response(
-            self.context_for_tdrg, 
+            context_for_tdrg, 
             share_photo,
             do_sample=do_sample,
             num_beams=num_beams,
@@ -105,41 +158,61 @@ class ConversationalAgent:
             top_k=top_k
         )
         
-        extra_prompt = {"human": human_prompt, "others": others_prompt}
-        
         if share_photo:
-            logging.info(f"Generated Image Description: {textual_response}")
-            type = "others"
-            for human_word in human_words:
-                if human_word in textual_response:
-                    type = "human"
-                    break
-            caption = textual_response + extra_prompt[type]
-            # generate visual response
-            visual_response = self.model.generate_image(
-                caption, 
-                negative_prompt, 
-                seed=text2image_seed,
+            generated_image_path = self.generate_visual_response(
+                description=textual_response,
                 num_inference_steps=num_inference_steps,
-                guidance_scale=guidance_scale
+                guidance_scale=guidance_scale,
+                human_words=human_words,
+                human_prompt=human_prompt,
+                others_prompt=others_prompt,
+                negative_prompt=negative_prompt
             )
-            # save 
-            generated_image_save_path = os.path.join(self.generated_images_storage, "{}.jpg".format(len(os.listdir(self.generated_images_storage))))
-            visual_response.save(generated_image_save_path)
-            logging.info(f"generated image is saved to: {generated_image_save_path}")
             # update context
-            self.context_for_rmp += " [SEP] " + textual_response
-            self.context_for_tdrg += "[DST] " + textual_response
+            context_for_rmp += " [SEP] " + textual_response
+            context_for_tdrg += "[DST] " + textual_response
             
-            chat_history.append((message, (generated_image_save_path, f"Generated Image Description: {textual_response}")))
+            chat_history.append((message, (f'''<img src="./file={generated_image_path}" style="display: inline-block;">''')))
 
         else:
-            logging.info(f"\nBot : {textual_response}")
             # update context
-            self.context_for_rmp += " [SEP] " + textual_response
-            self.context_for_tdrg += "[UTT] " + textual_response
+            context_for_rmp += " [SEP] " + textual_response
+            context_for_tdrg += "[UTT] " + textual_response
             
-            chat_history.append((message, textual_response))
+            logging.info(f"***** Second Prediction *****")
+            logging.info(f"\n@@ context_for_rmp = {context_for_rmp}")
+            logging.info(f"\n@@ context_for_tdrg = {context_for_tdrg}")
+            share_photo = True if self.model.response_modal_predict(context_for_rmp) else False
+            if share_photo:
+                description = self.model.generate_textual_response(
+                    context_for_tdrg, 
+                    share_photo,
+                    do_sample=do_sample,
+                    num_beams=num_beams,
+                    top_p=top_p,
+                    top_k=top_k
+                )
+                generated_image_path = self.generate_visual_response(
+                    description=description,
+                    num_inference_steps=num_inference_steps,
+                    guidance_scale=guidance_scale,
+                    human_words=human_words,
+                    human_prompt=human_prompt,
+                    others_prompt=others_prompt,
+                    negative_prompt=negative_prompt
+                )
+                # update context
+                context_for_rmp += " [SEP] " + description
+                context_for_tdrg += "[DST] " + description
+                
+                chat_history.append((message, (f'''{textual_response}\n<img src="./file={generated_image_path}" style="display: inline-block;">''')))
+            else:
+                chat_history.append((message, textual_response))
+        
+        chat_state.append([message, context_for_rmp, context_for_tdrg])
+        
+        logging.info(f"\n@@ chat_history: {chat_history}")
+        # logging.info(f"\n@@ chat_state: {chat_state}")
             
-        return "", chat_history, chat_state
+        return "", chat_history, chat_state, gr.update(interactive=True)
         

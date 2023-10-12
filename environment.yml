@@ -12,11 +12,11 @@ dependencies:
   - torchaudio=0.12.1
   - torchvision=0.13.1
   - pip:
-    - accelerate==0.19.0
+    - accelerate==0.19.0  #0.23.0
     - diffusers==0.18.0
-    - gradio==3.39.0
-    - gradio-client==0.3.0
+    - gradio==3.47.1
+    - gradio-client==0.6.0
     - huggingface-hub==0.15.1
     - omegaconf==2.3.0
     - sentencepiece==0.1.97
-    - transformers==4.27.0
+    - transformers==4.28.0  #4.34.0
