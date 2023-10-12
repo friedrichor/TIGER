@@ -3,7 +3,7 @@
 
 # Demo
 
-![demo](figs/demo_system.png)
+![demo](figs/screenshot/demo_system.png)
 
 We implemented a multimodal dialogue system based on TIGER, as depicted in above figure.    
 
@@ -17,8 +17,8 @@ Our system offers various modifiable components.
 
 |   |   |
 :-------------------------:|:-------------------------:
-![conv1](figs/conversation1.png) |  ![conv2](figs/conversation2.png)
-![conv3](figs/conversation3.png) |  ![conv4](figs/conversation4.png)
+![conv1](figs/screenshot/conversation1.png) |  ![conv2](figs/screenshot/conversation2.png)
+![conv3](figs/screenshot/conversation3.png) |  ![conv4](figs/screenshot/conversation4.png)
 
 # Supplementary Instructions
 
