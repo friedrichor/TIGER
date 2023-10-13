@@ -1,9 +1,9 @@
 model:
     rmp_pretrained_model_path_or_name: "t5-base"
-    rmp_checkpoint: "./model_weights/tiger_t5_base_encoder.pth"
+    rmp_checkpoint: "./model_weights/tiger_response_modal_predictor.pth"
     tdrg_pretrained_model_path_or_name: "microsoft/DialoGPT-medium"
-    tdrg_checkpoint: "./model_weights/tiger_dialogpt_medium.pth"
-    t2it_model_path_or_name: "./model_weights/tiger_stable_diffusion"
+    tdrg_checkpoint: "./model_weights/tiger_textual_dialogue_response_generator.pth"
+    t2it_model_path_or_name: "./model_weights/tiger_text2image_translator"
 
 run:
     outputs_dir: "outputs/demo"
