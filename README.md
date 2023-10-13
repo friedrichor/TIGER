@@ -209,7 +209,6 @@ Our system offers various modifiable components:
 
 ### 1. Prepare the code and the environment
 ```
-git clone TIGER.git
 cd TIGER/
 conda env create -f environment.yml
 conda activate tiger
@@ -217,7 +216,7 @@ conda activate tiger
 
 ### 2. Prepare the model weights
 
-&#10024; Please download our model weights from [here](https://drive.google.com/drive/folders/1ulc4X0yzJHQNFZJ2nyH5H9ZatZPkzZTC?usp=sharing) (Google Drive). The final weights would be in a single folder in a structure similar to the following:
+&#10024; Please download our model weights from [here]() (anonymfile). The final weights would be in a single folder in a structure similar to the following:
 
 ```
 TIGER
@@ -227,7 +226,25 @@ TIGER
 │   ├── tiger_t5_base_encoder.pth
 │   ├── tiger_dialogpt_medium.pth
 │   └── tiger_stable_diffusion
-│       └── ...
+│       ├── feature_extractor
+│       │   └── preprocessor_config.json
+│       ├── scheduler
+│       │   └── scheduler_config.json
+│       ├── text_encoder
+│       │   ├── config.json
+│       │   └── pytorch_model.bin
+│       ├── tokenizer
+│       ├── merges.txt
+│       ├── special_tokens_map.json
+│       ├── tokenizer_config.json
+│       │   └── vocab.json
+│       ├── unet
+│       │   ├── config.json
+│       │   └── diffusion_pytorch_model.bin
+│       ├── vae
+│       │   ├── config.json
+│       │   └── diffusion_pytorch_model.bin
+│       └── model_index.json
 ├── tiger
 │   └── ...
 ├── utils
