@@ -223,9 +223,9 @@ TIGER
 ├── demo
 │   └── ...
 ├── model_weights
-│   ├── tiger_t5_base_encoder.pth
-│   ├── tiger_dialogpt_medium.pth
-│   └── tiger_stable_diffusion
+│   ├── tiger_response_modal_predictor.pth
+│   ├── tiger_textual_dialogue_response_generator.pth
+│   └── tiger_text2image_translator
 │       ├── feature_extractor
 │       │   └── preprocessor_config.json
 │       ├── scheduler
