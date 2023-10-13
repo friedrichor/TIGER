@@ -98,11 +98,11 @@ Our system offers various modifiable components:
   </tr>
   <tr>
     <td align="center">Human</td>
-    <td align="left"> ${{Description}}$, facing the camera, photograph, highly detailed face, depth of field, moody light, style by Yasmin Albatoul, Harry Fayt, centered, extremely detailed, Nikon D850, award winning photography</td>
+    <td align="left"><font face="Times New Roman"><I>Description</I></font>, facing the camera, photograph, highly detailed face, depth of field, moody light, style by Yasmin Albatoul, Harry Fayt, centered, extremely detailed, Nikon D850, award winning photography</td>
   </tr>
   <tr>
     <td align="center">Others</td>
-    <td align="left"> ${{Description}}$, depth of field. bokeh. soft light. by Yasmin Albatoul, Harry Fayt. centered. extremely detailed. Nikon D850, (35mm|50mm|85mm). award winning photography.</td>
+    <td align="left"><font face="Times New Roman"><I>Description</I></font>, depth of field. bokeh. soft light. by Yasmin Albatoul, Harry Fayt. centered. extremely detailed. Nikon D850, (35mm|50mm|85mm). award winning photography.</td>
   </tr>
 </table>
 
