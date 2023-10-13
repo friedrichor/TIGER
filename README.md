@@ -190,8 +190,8 @@ Our system offers various modifiable components:
 &emsp;&emsp;We believe that solving this problem with MLLMs (Multimodal Large Language Models) is very promising. However, the current mainstream MLLMs, such as GPT-4, LLaVA, only have the ability to perceive and understand images, and they can well solve the problems of Image Captioning, VQA, etc., but do not have the ability to generate images.
 
 &emsp;&emsp;Our research focuses on `open-domain` `multimodal` dialogue generation `with image generation capability`.
-- On the one hand, MLLMs with image generation capability are scarce. Through our experience about them, the quality of the generated images and the relevance of the images with the conversational context are not satisfactory.
-- On the other hand, as far as we know, there aren't any MLLMs focusing on multimodal open-domain conversation, and most of them are still focusing on VQA scenarios. 
+- On the one hand, MLLMs with image generation capability are scarce. Based on our experience with this kind of MLLMs, such as [GILL](https://arxiv.org/abs/2305.17216), [Emu](https://arxiv.org/abs/2307.05222), the timing to respond with images, as well as the quality of the generated image and the relevance of the image with the conversational context are not satisfactory.
+- On the other hand, as far as we know, there aren't any MLLMs focusing on multimodal open-domain conversation, and most of them are still focusing on VQA scenarios, including [MiniGPT-4](http://arxiv.org/abs/2304.10592), [LLaVA](http://arxiv.org/abs/2304.08485), [MultiModal-GPT](http://arxiv.org/abs/2305.04790), [InstructBLIP](http://arxiv.org/abs/2305.06500), [Qwen-VL](http://arxiv.org/abs/2308.12966), etc.  
 
 &emsp;&emsp;Undeniably, applying MLLMs to our approach is a promising topic, and we will also refine it in our future work.
 
