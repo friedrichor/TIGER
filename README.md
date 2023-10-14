@@ -1,18 +1,17 @@
-# &#128047; TIGER: A Unified Generative Model Framework for Multimodal Dialogue Response Generation
+# <img src="figs/tiger_logo.png" height="40px"> TIGER: A Unified Generative Model Framework for Multimodal Dialogue Response Generation
 
-- [🐯 TIGER: A Unified Generative Model Framework for Multimodal Dialogue Response Generation](#-tiger-a-unified-generative-model-framework-for-multimodal-dialogue-response-generation)
-- [Model](#model)
-- [Demo](#demo)
+- [ Model](#-model)
+- [ Demo](#-demo)
   - [Examples](#examples)
-- [Supplementary Instructions](#supplementary-instructions)
+- [ Supplementary Instructions](#-supplementary-instructions)
   - [Image Descriptions](#image-descriptions)
   - [Prompts](#prompts)
   - [Image Generation Results](#image-generation-results)
   - [Case Study](#case-study)
-- [Discussion](#discussion)
+- [ Discussion](#-discussion)
   - [Dose the MLLMs like GPT-4 can solves this problem?](#dose-the-mllms-like-gpt-4-can-solves-this-problem)
   - [Limitations](#limitations)
-- [Getting Start](#getting-start)
+- [ Getting Start](#-getting-start)
   - [Hardware](#hardware)
   - [Installation](#installation)
     - [1. Prepare the code and the environment](#1-prepare-the-code-and-the-environment)
@@ -20,11 +19,11 @@
   - [Launching Demo Locally](#launching-demo-locally)
 
 
-# Model
+# <img src="figs/tiger_logo.png" height="30px"> Model
 
 ![model](figs/TIGER.png)
 
-# Demo
+# <img src="figs/tiger_logo.png" height="30px"> Demo
 
 ![demo](figs/screenshot/demo_system.png)
 
@@ -43,7 +42,7 @@ Our system offers various modifiable components:
 ![conv1](figs/screenshot/conversation1.png) | ![conv2](figs/screenshot/conversation2.png)
 ![conv3](figs/screenshot/conversation3.png) | ![conv4](figs/screenshot/conversation4.png)
 
-# Supplementary Instructions
+# <img src="figs/tiger_logo.png" height="30px"> Supplementary Instructions
 
 ## Image Descriptions
 
@@ -183,7 +182,7 @@ Our system offers various modifiable components:
 2. generate accurate and detailed image descriptions; 
 3. generate a high-quality, high-resolution (768 * 768) image as a visual response.
 
-# Discussion
+# <img src="figs/tiger_logo.png" height="30px"> Discussion
 
 ## Dose the MLLMs like GPT-4 can solves this problem?
 
@@ -199,7 +198,7 @@ Our system offers various modifiable components:
 
 &emsp;&emsp;The Text-to-Image translator using Stable Diffusion faces a common issue with Diffusion Models, where it takes significantly longer to generate images compared to DALL-E and GAN-style models. In our case, setting the inference step to 20 results in a 5-second delay in generating image responses, negatively impacting the overall dialogue experience. We acknowledge that improving the inference speed of Diffusion Models and exploring GAN-style models that outperform Stable Diffusion are promising research directions for the future.
 
-# Getting Start
+# <img src="figs/tiger_logo.png" height="30px"> Getting Start
 
 ## Hardware
 
