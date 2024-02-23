@@ -14,13 +14,13 @@
 
 Figure 1: The overview of TIGER. Given the dialogue context, response modal predictor $\mathcal{M}$ determines the timing to respond with images. If the predicted response modal is text, textual dialogue response generator $\mathcal{G}$ generates the text response. Conversely, $\mathcal{G}$ produces an image description, and Text-to-Image translator $\mathcal{F}$ leverages this description to generate an image as the visual response.
 
-# Contributions :globe_with_meridians:
+# Contributions :trophy:
 
 - We propose **TIGER**, a unified generative model framework designed for multimodal dialogue response generation. Notably, this framework is capable of handling conversations involving any combination of modalities.
 - We implement a system for multimodal dialogue response generation, incorporating both text and images, based on TIGER.
 - Extensive experiments show that TIGER achieves new SOTA results on both automatic and human evaluations, which validate the effectiveness of our system in providing a superior multimodal conversational experience.
 
-# Demo :computer:
+# Demo :globe_with_meridians:
 
 ![demo](figs/screenshot/demo_system.png)
 
@@ -99,7 +99,7 @@ TIGER
 ...
 ```
 
-## Launching Demo Locally :trophy:
+## Launching Demo Locally :computer:
 
 ```
 python demo.py --config demo/demo_config.yaml
