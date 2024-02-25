@@ -4,8 +4,9 @@
 
 ## :loudspeaker: Latest Updates
 
-- **2024 Feb-23** : This work has been accepted by COLING 2024. Our paper will be published soon.
+- **2024 Feb-20** : This work has been accepted by COLING 2024. Our paper will be published soon.
 - **2023 Oct-13** : Updated the demo interface.
+- **2023 Aug-02** : Released the demo video.
 
 
 # TIGER Framework :bulb:
@@ -16,9 +17,9 @@ Figure 1: The overview of TIGER. Given the dialogue context, response modal pred
 
 # Contributions :trophy:
 
-- We propose **TIGER**, a unified generative model framework designed for multimodal dialogue response generation. Notably, this framework is capable of handling conversations involving any combination of modalities.
+- We propose mul**TI**modal **GE**nerator for dialogue **R**esponse (**TIGER**), a unified generative model framework designed for multimodal dialogue response generation. Notably, this framework is capable of handling conversations involving any combination of modalities.
 - We implement a system for multimodal dialogue response generation, incorporating both text and images, based on TIGER.
-- Extensive experiments show that TIGER achieves new SOTA results on both automatic and human evaluations, which validate the effectiveness of our system in providing a superior multimodal conversational experience.
+- Extensive experiments show that TIGER achieves new state-of-the-art results on both automatic and human evaluations, which validate the effectiveness of our system in providing a superior multimodal conversational experience.
 
 # Demo :globe_with_meridians:
 
