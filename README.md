@@ -1,12 +1,13 @@
 # <img src="figs/tiger_logo.png" height="40px"> TIGER: A Unified Generative Model Framework for Multimodal Dialogue Response Generation
 
-[![paper](https://img.shields.io/badge/Paper-<COLOR>.svg)]() [![YouTube](https://badges.aleen42.com/src/youtube.svg)](https://youtu.be/Kd0CMwDs8Rk)
+[![paper](https://img.shields.io/badge/ACL%20Anthology-FF0000.svg)](https://aclanthology.org/2024.lrec-main.1403/) [![YouTube](https://badges.aleen42.com/src/youtube.svg)](https://youtu.be/Kd0CMwDs8Rk)
 
 ## :loudspeaker: Latest Updates
 
-- **2024 Feb-20** : This work has been accepted by COLING 2024. Our paper will be published soon.
+- **2024 May-18** : Our paper is available at [here](https://aclanthology.org/2024.lrec-main.1403/).
+- **2024 Feb-20** : This work has been accepted by **COLING 2024**.
 - **2023 Oct-13** : Updated the demo interface.
-- **2023 Aug-02** : Released the demo video.
+- **2023 Aug-02** : Released the demo video. [[YouTube]](https://youtu.be/Kd0CMwDs8Rk)
 
 
 # TIGER Framework :bulb:
@@ -106,3 +107,23 @@ TIGER
 python demo.py --config demo/demo_config.yaml
 ```
 
+
+## Citation  
+If you find our work  useful in your research, please consider citing us:
+```
+@inproceedings{kong-etal-2024-tiger-unified,
+    title = "{TIGER}: A Unified Generative Model Framework for Multimodal Dialogue Response Generation",
+    author = "Kong, Fanheng  and
+      Wang, Peidong  and
+      Feng, Shi  and
+      Wang, Daling  and
+      Zhang, Yifei",
+    booktitle = "Proceedings of the 2024 Joint International Conference on Computational Linguistics, Language Resources and Evaluation (LREC-COLING 2024)",
+    month = may,
+    year = "2024",
+    address = "Torino, Italy",
+    publisher = "ELRA and ICCL",
+    url = "https://aclanthology.org/2024.lrec-main.1403",
+    pages = "16135--16141",
+}
+```
